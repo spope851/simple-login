@@ -23,7 +23,7 @@ class Account extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-
+      changepw: false
     }
     
   }
@@ -42,7 +42,7 @@ class Account extends React.Component {
               <tbody>
                 <tr>
                   <td>
-                    <button disabled=false className="nav-link" >Change Password</button>
+                    <button disabled=false className="nav-link" onClick={()=>this.setState({changepw: true, disabled: true})}>Change Password</button>
                   </td>
                   <td>
                     <button disabled=false className="nav-link" onClick={deleteAccount}>Delete Account</button>
