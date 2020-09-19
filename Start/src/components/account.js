@@ -5,28 +5,15 @@ let user
 let pass
 let userIndex
 let user_id
-users["users"].forEach(function(el, idx){
-  if (el.signedIn === true){
-    user_id = el.id
-    user = el.username
-    pass = el.password
-    userIndex = idx
-  }
-});
 
 const logout = () => {
-  axios.put(`http://localhost:3000/users/${user_id}`, {
-    "id": user_id,
-    "username": user,
-    "password": pass,  
-    "signedIn":false})
-    user = undefined
+ alert("you're logged out");
 }
 
 const deleteAccount = () => {
   let ans = window.confirm("Are you sure?")
   if(ans){
-    axios.delete(`http://localhost:3000/users/${user_id}`)
+    alert("deleted");
   }
 }
 
@@ -35,21 +22,14 @@ class Account extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      changepw: false,
-      disabled: false
+
     }
     
   }
   
   changePassword(e) {
     e.preventDefault()
-    let newPassword = document.getElementById('newP').value
-    axios.put(`http://localhost:3000/users/${user_id}`, {
-    "id": userIndex,
-    "username": user,
-    "password": newPassword,  
-    "signedIn":false})
-    window.alert('Password changes successfully!')
+       alert("changed password");
   }
 
   render() {
@@ -61,13 +41,13 @@ class Account extends React.Component {
               <tbody>
                 <tr>
                   <td>
-                    <button disabled={this.state.disabled} className="nav-link" onClick={()=>this.setState({changepw: true, disabled: true})}>Change Password</button>
+                    <button disabled=false className="nav-link" >Change Password</button>
                   </td>
                   <td>
-                    <button disabled={this.state.disabled} className="nav-link" onClick={deleteAccount}>Delete Account</button>
+                    <button disabled=false className="nav-link" onClick={deleteAccount}>Delete Account</button>
                   </td>
                   <td>
-                    <button disabled={this.state.disabled} className="nav-link" onClick={logout}>Logout</button>
+                    <button disabled=false className="nav-link" onClick={logout}>Logout</button>
                   </td>
                 </tr>
               </tbody>  
