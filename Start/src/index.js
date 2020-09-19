@@ -13,12 +13,8 @@ import Login from './components/login';
 import User from './components/user'
 import users from './userInfo/users.json'
 
-let activeUser = null
-users["users"].forEach(function(el){
-  if (el.signedIn === true){
-    activeUser = el.username
-  }
-})
+
+
 function Index() {
     return (
           <header className="App-header">
