@@ -1,7 +1,11 @@
 import React from 'react';
 import users from '../userInfo/users.json'
 
-
+let axios = require('axios');
+let user
+let pass
+let userIndex
+let user_id
 
 class Login extends React.Component {
   constructor(props) {
@@ -13,12 +17,12 @@ class Login extends React.Component {
   
   login (e) {
     e.preventDefault()
-    alter('you're logged in');
+    alter("you're logged in");
   }
 
   signup (e) {
     e.preventDefault()
-    alter('you're signed up');
+    alter("you're signed up");
   }
   render() {
     return (
