@@ -18,7 +18,6 @@ import users from './userInfo/users.json'
 function Index() {
     return (
           <header className="App-header">
-            <User username={activeUser}/>
             <div className="navbar">
               <a className="nav-link" href="/account">Account</a>
               <a className="nav-link" href="/app">App</a>
