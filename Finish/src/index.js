@@ -4,8 +4,6 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import Account from './components/account';
-import Team from './components/team';
-import stats from './scrape/playerStats.json'
 import * as serviceWorker from './serviceWorker';
 import {
   BrowserRouter as Router,
@@ -16,12 +14,6 @@ import Login from './components/login';
 import User from './components/user'
 import users from './userInfo/users.json'
 
-let teams = [];
-Object.keys(stats).forEach(function(el){
-  if(teams.indexOf(stats[el].data[0].team.id)===-1){
-    teams.push(stats[el].data[0].team.id)
-  }
-})
 let activeUser = null
 users["users"].forEach(function(el){
   if (el.signedIn === true){
@@ -51,11 +43,6 @@ ReactDOM.render(
           <Route path="/login" component={Login} />
           <Route path="/account" component={Account} />
           <Route path="/app" component={App} />
-          <Switch>
-            {teams.map((el) =>
-              <Route key={el} path={"/teams/"+el} component={Team} />
-            )}
-          </Switch>
       </Router>
     </div>
   </React.StrictMode>,
