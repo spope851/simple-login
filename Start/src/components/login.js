@@ -1,76 +1,24 @@
 import React from 'react';
 import users from '../userInfo/users.json'
-let axios = require('axios');
-let pass
-let user_id
-let nextID
-let userlist = users["users"]
-let usernames = []
-userlist.forEach(function(el, idx){
-  if (el.signedIn === true){
-    user_id = el.id
-    pass = el.password
-  }
-  usernames.push(el.username)
-  nextID = el.id + 1
-});
+
+
+
 class Login extends React.Component {
   constructor(props) {
     super(props); 
       this.state = {
-        notSignedUp: false,
-        wrongPassword: false,
-        usernameUnavailable:false,
+        
     }
   }
   
   login (e) {
     e.preventDefault()
-    let username = document.getElementById('loginU').value
-    let password = document.getElementById('loginP').value
-    if(usernames.indexOf(username) > -1){
-      user_id = userlist[usernames.indexOf(username)].id;
-      pass = userlist[usernames.indexOf(username)].password;
-      if(password === pass){
-        axios.put(`http://localhost:3000/users/${user_id}`, {
-        "id": user_id,
-        "username": username,
-        "password": password,  
-        "signedIn":true})
-        this.props.history.push('/');
-      }
-      else{
-        this.setState({notSignedUp: false,
-                      usernameUnavailable: false,
-                      wrongPassword: true});
-      }
-    }
-    else{
-      this.setState({wrongPassword: false,
-                    usernameUnavailable:false,
-                    notSignedUp: true});
-    }
+    alter('you're logged in');
   }
 
   signup (e) {
     e.preventDefault()
-    let username = document.getElementById('signupU').value
-    let password = document.getElementById('signupP').value
-    if(usernames.indexOf(username) === -1){
-      const axios = require('axios');
-      axios.post(`http://localhost:3000/users`,{
-        "id": nextID,
-        "username": username,
-        "password": password,
-        "signedIn":true})
-      this.props.history.push('/');
-      return username
-    }
-    else {
-      this.setState({wrongPassword: false,
-                    notSignedUp:false,
-                    usernameUnavailable: true})
-    }
+    alter('you're signed up');
   }
   render() {
     return (
@@ -82,8 +30,7 @@ class Login extends React.Component {
           <input id="loginP" type="text" placeholder="Password" />
           <input type="submit" value="Login"/>
         </form>
-        {this.state.notSignedUp && <p style={{color:'red'}}>We can't find your account. Sign up below!</p>}
-        {this.state.wrongPassword && <p style={{color:'red'}}>Incorrect Password</p>}
+
         <br />
         <h3>Or sign up for free:</h3>
         <br />
@@ -92,7 +39,7 @@ class Login extends React.Component {
           <input id="signupP" type="text" placeholder="Password" />
           <input type="submit" value="Sign Up"/>
         </form>
-        {this.state.usernameUnavailable && <p style={{color:'red'}}>Username unavailable! Try another</p>}
+        
       </div>
     );
   }
