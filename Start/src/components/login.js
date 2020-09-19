@@ -2,10 +2,11 @@ import React from 'react';
 import users from '../userInfo/users.json'
 
 let axios = require('axios');
-let user
 let pass
-let userIndex
 let user_id
+let nextID
+let userlist = users["users"]
+let usernames = []
 
 class Login extends React.Component {
   constructor(props) {
