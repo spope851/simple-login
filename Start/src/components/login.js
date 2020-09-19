@@ -18,12 +18,12 @@ class Login extends React.Component {
   
   login (e) {
     e.preventDefault()
-    alter("you're logged in");
+    alert("you're logged in");
   }
 
   signup (e) {
     e.preventDefault()
-    alter("you're signed up");
+    alert("you're signed up");
   }
   render() {
     return (
