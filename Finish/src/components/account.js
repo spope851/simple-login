@@ -1,35 +1,31 @@
 import React from 'react';
-import users from '../userInfo/users.json'
 let axios = require('axios');
 let user
-let pass
-let userIndex
 let user_id
-users["users"].forEach(function(el, idx){
-  if (el.signedIn === true){
-    user_id = el.id
-    user = el.username
-    pass = el.password
-    userIndex = idx
-  }
-});
 
 const logout = () => {
-  axios.put(`http://localhost:3000/users/${user_id}`, {
-    "id": user_id,
-    "username": user,
-    "password": pass,  
-    "signedIn":false})
-    user = undefined
+  axios.put(`http://localhost:5000/api/users`, {"function":"logout"})
+  document.location.reload()
 }
 
 const deleteAccount = () => {
   let ans = window.confirm("Are you sure?")
   if(ans){
-    axios.delete(`http://localhost:3000/users/${user_id}`)
+    axios.delete(`http://localhost:5000/api/users`, { "data": {"id":user_id}})
+    document.location.reload()
   }
 }
-
+  
+const changePassword = () => {
+  let newPassword = document.getElementById('newP').value
+  axios.put(`http://localhost:5000/api/users`, {
+    "function":"changePassword",
+    "id": user_id,
+    "newPassword": newPassword
+  })
+  document.location.reload()
+  window.alert('Password changes successfully!')
+}
 
 class Account extends React.Component {
   constructor(props) {
@@ -40,19 +36,21 @@ class Account extends React.Component {
     }
     
   }
-  
-  changePassword(e) {
-    e.preventDefault()
-    let newPassword = document.getElementById('newP').value
-    axios.put(`http://localhost:3000/users/${user_id}`, {
-    "id": userIndex,
-    "username": user,
-    "password": newPassword,  
-    "signedIn":false})
-    window.alert('Password changes successfully!')
-  }
 
   render() {
+
+    var request = new XMLHttpRequest();
+    request.open('GET', 'http://localhost:5000/api/users', false);  // `false` makes the request synchronous
+    request.send();
+    if (request.status === 200) {
+      let res = JSON.parse(request.response)
+      res.forEach(function(el, idx){
+        if (el.signedIn === true){
+          user_id = el.id
+          user = el.username
+        }
+      })}
+
     return (
       <div>
         {user ? 
@@ -73,7 +71,7 @@ class Account extends React.Component {
               </tbody>  
             </table>
             {this.state.changepw ? 
-              <form onSubmit={this.changePassword.bind(this)}>
+              <form onSubmit={changePassword}>
                 <input id="newP" type="text" placeholder="New Password" />
                 <input type="submit" value="Confirm"/>
               </form>

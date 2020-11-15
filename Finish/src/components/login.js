@@ -1,23 +1,10 @@
 import React from 'react';
-import users from '../userInfo/users.json'
 let axios = require('axios');
-let user
-let pass
-let userIndex
-let user_id
 let nextID
-let userlist = users["users"]
 let usernames = []
-userlist.forEach(function(el, idx){
-  if (el.signedIn === true){
-    user_id = el.id
-    user = el.username
-    pass = el.password
-    userIndex = idx
-  }
-  usernames.push(el.username)
-  nextID = el.id + 1
-});
+let passwords = []
+let IDs = []
+
 class Login extends React.Component {
   constructor(props) {
     super(props); 
@@ -33,15 +20,10 @@ class Login extends React.Component {
     let username = document.getElementById('loginU').value
     let password = document.getElementById('loginP').value
     if(usernames.indexOf(username) > -1){
-      user_id = userlist[usernames.indexOf(username)].id;
-      pass = userlist[usernames.indexOf(username)].password;
-      if(password === pass){
-        axios.put(`http://localhost:3000/users/${user_id}`, {
-        "id": user_id,
-        "username": username,
-        "password": password,  
-        "signedIn":true})
-        this.props.history.push('/');
+      if(password === passwords[usernames.indexOf(username)]){
+        axios.put(`http://localhost:5000/api/users`, {"function":"login", "id":IDs[usernames.indexOf(username)]})
+        this.props.history.push('/app')
+        document.location.reload()
       }
       else{
         this.setState({wrongPassword: true});
@@ -57,20 +39,34 @@ class Login extends React.Component {
     let username = document.getElementById('signupU').value
     let password = document.getElementById('signupP').value
     if(usernames.indexOf(username) === -1){
-      const axios = require('axios');
-      axios.post(`http://localhost:3000/users`,{
+      axios.post(`http://localhost:5000/api/users`,{
         "id": nextID,
         "username": username,
         "password": password,
-        "signedIn":true})
-      this.props.history.push('/');
-      return username
+        "signedIn":true
+      })
+      this.props.history.push('/app')
+      document.location.reload()
     }
     else {
       this.setState({usernameUnavailable: true})
     }
   }
+
   render() {
+
+    var request = new XMLHttpRequest();
+    request.open('GET', 'http://localhost:5000/api/users', false);  // `false` makes the request synchronous
+    request.send();
+    if (request.status === 200) {
+      let res = JSON.parse(request.response)
+      res.forEach(function(el){
+        usernames.push(el.username)
+        passwords.push(el.password)
+        IDs.push(el.id)
+        nextID = el.id + 1
+      })}
+
     return (
       <div>
         <h2>Login:</h2>
